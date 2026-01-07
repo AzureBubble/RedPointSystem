@@ -1,0 +1,321 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 364d2dc642a2d9947abbb3b8fe58cc0d, type: 3}
+  m_Name: RedDotTreeConfig
+  m_EditorClassIdentifier: 
+  m_rootNodes:
+  - name: Main
+    description: "\u4E3B\u754C\u9762"
+    type: 0
+    strategy: 1
+    children:
+    - rid: 7239240800362561581
+    - rid: 7239240800362561582
+    - rid: 7239240800362561583
+    - rid: 7239240800362561584
+    foldout: 1
+    generatedPath: Main
+  - name: Social
+    description: "\u793E\u4EA4\u7CFB\u7EDF"
+    type: 0
+    strategy: 1
+    children:
+    - rid: 7239240800362561585
+    - rid: 7239240800362561586
+    foldout: 1
+    generatedPath: Social
+  m_outputPath: Scripts/RedDot/Config/RedDotPathDefine.g.cs
+  m_namespace: RedDotSystem
+  m_className: RedDotPaths
+  references:
+    version: 2
+    RefIds:
+    - rid: 7239240800362561581
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Mail
+        description: "\u90AE\u4EF6\u7CFB\u7EDF"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561587
+        - rid: 7239240800362561588
+        - rid: 7239240800362561589
+        foldout: 1
+        generatedPath: Main/Mail
+    - rid: 7239240800362561582
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Bag
+        description: "\u80CC\u5305\u7CFB\u7EDF"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561590
+        - rid: 7239240800362561591
+        - rid: 7239240800362561592
+        foldout: 1
+        generatedPath: Main/Bag
+    - rid: 7239240800362561583
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Quest
+        description: "\u4EFB\u52A1\u7CFB\u7EDF"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561593
+        - rid: 7239240800362561594
+        - rid: 7239240800362561595
+        foldout: 1
+        generatedPath: Main/Quest
+    - rid: 7239240800362561584
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Activity
+        description: "\u6D3B\u52A8\u7CFB\u7EDF"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561596
+        - rid: 7239240800362561597
+        foldout: 1
+        generatedPath: Main/Activity
+    - rid: 7239240800362561585
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Friends
+        description: "\u597D\u53CB"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561598
+        - rid: 7239240800362561599
+        foldout: 1
+        generatedPath: Social/Friends
+    - rid: 7239240800362561586
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Chat
+        description: "\u804A\u5929"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561600
+        - rid: 7239240800362561601
+        - rid: 7239240800362561602
+        foldout: 1
+        generatedPath: Social/Chat
+    - rid: 7239240800362561587
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: System
+        description: "\u7CFB\u7EDF\u90AE\u4EF6"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Mail/System
+    - rid: 7239240800362561588
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Player
+        description: "\u73A9\u5BB6\u90AE\u4EF6"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Mail/Player
+    - rid: 7239240800362561589
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Guild
+        description: "\u516C\u4F1A\u90AE\u4EF6"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Mail/Guild
+    - rid: 7239240800362561590
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Equipment
+        description: "\u88C5\u5907"
+        type: 2
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Bag/Equipment
+    - rid: 7239240800362561591
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Item
+        description: "\u9053\u5177"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Bag/Item
+    - rid: 7239240800362561592
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Material
+        description: "\u6750\u6599"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Bag/Material
+    - rid: 7239240800362561593
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Main
+        description: "\u4E3B\u7EBF\u4EFB\u52A1"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Quest/Main
+    - rid: 7239240800362561594
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Daily
+        description: "\u65E5\u5E38\u4EFB\u52A1"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Quest/Daily
+    - rid: 7239240800362561595
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Weekly
+        description: "\u5468\u5E38\u4EFB\u52A1"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Quest/Weekly
+    - rid: 7239240800362561596
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: SevenDay
+        description: "\u4E03\u65E5\u6D3B\u52A8"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561603
+        - rid: 7239240800362561604
+        foldout: 1
+        generatedPath: Main/Activity/SevenDay
+    - rid: 7239240800362561597
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: SignIn
+        description: "\u7B7E\u5230\u6D3B\u52A8"
+        type: 0
+        strategy: 1
+        children:
+        - rid: 7239240800362561605
+        - rid: 7239240800362561606
+        foldout: 1
+        generatedPath: Main/Activity/SignIn
+    - rid: 7239240800362561598
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Request
+        description: "\u597D\u53CB\u7533\u8BF7"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Social/Friends/Request
+    - rid: 7239240800362561599
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Recommend
+        description: "\u63A8\u8350\u597D\u53CB"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Social/Friends/Recommend
+    - rid: 7239240800362561600
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: World
+        description: "\u4E16\u754C\u9891\u9053"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Social/Chat/World
+    - rid: 7239240800362561601
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Guild
+        description: "\u516C\u4F1A\u9891\u9053"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Social/Chat/Guild
+    - rid: 7239240800362561602
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Private
+        description: "\u79C1\u804A"
+        type: 1
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Social/Chat/Private
+    - rid: 7239240800362561603
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Task
+        description: "\u4E03\u65E5\u6D3B\u52A8\u4EFB\u52A1"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Activity/SevenDay/Task
+    - rid: 7239240800362561604
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Reward
+        description: "\u4E03\u65E5\u6D3B\u52A8\u5956\u52B1"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Activity/SevenDay/Reward
+    - rid: 7239240800362561605
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Daily
+        description: "\u6BCF\u65E5\u7B7E\u5230"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Activity/SignIn/Daily
+    - rid: 7239240800362561606
+      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+      data:
+        name: Cumulative
+        description: "\u7D2F\u8BA1\u7B7E\u5230"
+        type: 0
+        strategy: 1
+        children: []
+        foldout: 1
+        generatedPath: Main/Activity/SignIn/Cumulative
