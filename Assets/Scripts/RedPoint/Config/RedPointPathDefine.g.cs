@@ -1,7 +1,7 @@
 ﻿// =============================================================================
 // AUTO-GENERATED FILE - DO NOT EDIT MANUALLY
 // Generated from: Assets/Scripts/RedPoint/Config/RedPointTreeConfig.asset
-// Generated at: 2026-01-08 11:42:14
+// Generated at: 2026-01-08 12:53:37
 // =============================================================================
 
 namespace RedPointSystem
@@ -249,25 +249,25 @@ namespace RedPointSystem
             mgr.Register(Main.Mail.Id, Main.Mail.Path, Main.Mail.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
 
             // 系统邮件
-            mgr.Register(Main.Mail.System, Main.Mail.SystemPath, Main.Mail.SystemSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Mail.System, Main.Mail.SystemPath, Main.Mail.SystemSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 玩家邮件
-            mgr.Register(Main.Mail.Player, Main.Mail.PlayerPath, Main.Mail.PlayerSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Mail.Player, Main.Mail.PlayerPath, Main.Mail.PlayerSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 公会邮件
-            mgr.Register(Main.Mail.Guild, Main.Mail.GuildPath, Main.Mail.GuildSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Mail.Guild, Main.Mail.GuildPath, Main.Mail.GuildSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 背包系统
             mgr.Register(Main.Bag.Id, Main.Bag.Path, Main.Bag.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
 
             // 装备
-            mgr.Register(Main.Bag.Equipment, Main.Bag.EquipmentPath, Main.Bag.EquipmentSegments, RedPointType.New, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Bag.Equipment, Main.Bag.EquipmentPath, Main.Bag.EquipmentSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 道具
             mgr.Register(Main.Bag.Item, Main.Bag.ItemPath, Main.Bag.ItemSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 材料
-            mgr.Register(Main.Bag.Material, Main.Bag.MaterialPath, Main.Bag.MaterialSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Bag.Material, Main.Bag.MaterialPath, Main.Bag.MaterialSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 任务系统
             mgr.Register(Main.Quest.Id, Main.Quest.Path, Main.Quest.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
 
             // 主线任务
-            mgr.Register(Main.Quest.Main, Main.Quest.MainPath, Main.Quest.MainSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Quest.Main, Main.Quest.MainPath, Main.Quest.MainSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 日常任务
             mgr.Register(Main.Quest.Daily, Main.Quest.DailyPath, Main.Quest.DailySegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 周常任务
@@ -279,35 +279,35 @@ namespace RedPointSystem
             mgr.Register(Main.Activity.SevenDay.Id, Main.Activity.SevenDay.Path, Main.Activity.SevenDay.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
 
             // 七日活动任务
-            mgr.Register(Main.Activity.SevenDay.Task, Main.Activity.SevenDay.TaskPath, Main.Activity.SevenDay.TaskSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Activity.SevenDay.Task, Main.Activity.SevenDay.TaskPath, Main.Activity.SevenDay.TaskSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 七日活动奖励
-            mgr.Register(Main.Activity.SevenDay.Reward, Main.Activity.SevenDay.RewardPath, Main.Activity.SevenDay.RewardSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Activity.SevenDay.Reward, Main.Activity.SevenDay.RewardPath, Main.Activity.SevenDay.RewardSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 签到活动
             mgr.Register(Main.Activity.SignIn.Id, Main.Activity.SignIn.Path, Main.Activity.SignIn.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
 
             // 每日签到
-            mgr.Register(Main.Activity.SignIn.Daily, Main.Activity.SignIn.DailyPath, Main.Activity.SignIn.DailySegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Activity.SignIn.Daily, Main.Activity.SignIn.DailyPath, Main.Activity.SignIn.DailySegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 累计签到
-            mgr.Register(Main.Activity.SignIn.Cumulative, Main.Activity.SignIn.CumulativePath, Main.Activity.SignIn.CumulativeSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Main.Activity.SignIn.Cumulative, Main.Activity.SignIn.CumulativePath, Main.Activity.SignIn.CumulativeSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
             // 社交系统
-            mgr.Register(Social.Id, Social.Path, Social.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Id, Social.Path, Social.Segments, RedPointType.Number, RedPointAggregateStrategy.Sum);
 
             // 好友
-            mgr.Register(Social.Friends.Id, Social.Friends.Path, Social.Friends.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Friends.Id, Social.Friends.Path, Social.Friends.Segments, RedPointType.Number, RedPointAggregateStrategy.Sum);
 
             // 好友申请
-            mgr.Register(Social.Friends.Request, Social.Friends.RequestPath, Social.Friends.RequestSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Friends.Request, Social.Friends.RequestPath, Social.Friends.RequestSegments, RedPointType.Number, RedPointAggregateStrategy.Sum);
             // 推荐好友
-            mgr.Register(Social.Friends.Recommend, Social.Friends.RecommendPath, Social.Friends.RecommendSegments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Friends.Recommend, Social.Friends.RecommendPath, Social.Friends.RecommendSegments, RedPointType.Number, RedPointAggregateStrategy.Sum);
             // 聊天
-            mgr.Register(Social.Chat.Id, Social.Chat.Path, Social.Chat.Segments, RedPointType.Dot, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Chat.Id, Social.Chat.Path, Social.Chat.Segments, RedPointType.Number, RedPointAggregateStrategy.Sum);
 
             // 世界频道
-            mgr.Register(Social.Chat.World, Social.Chat.WorldPath, Social.Chat.WorldSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Chat.World, Social.Chat.WorldPath, Social.Chat.WorldSegments, RedPointType.Number, RedPointAggregateStrategy.Sum);
             // 公会频道
-            mgr.Register(Social.Chat.Guild, Social.Chat.GuildPath, Social.Chat.GuildSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Chat.Guild, Social.Chat.GuildPath, Social.Chat.GuildSegments, RedPointType.Number, RedPointAggregateStrategy.Sum);
             // 私聊
-            mgr.Register(Social.Chat.Private, Social.Chat.PrivatePath, Social.Chat.PrivateSegments, RedPointType.Number, RedPointAggregateStrategy.Or);
+            mgr.Register(Social.Chat.Private, Social.Chat.PrivatePath, Social.Chat.PrivateSegments, RedPointType.Number, RedPointAggregateStrategy.Sum);
         }
 	}
 }
