@@ -32,6 +32,9 @@ namespace RedDotSystem
         [HideInInspector]
         public string generatedPath;
 
+        [HideInInspector]
+        public int generatedId;
+
         public RedDotNodeConfig()
         {
             name = "NewNode";

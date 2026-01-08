@@ -27,24 +27,26 @@ namespace RedDotSystem
 
         public const char PATH_SEPARATOR = '/';
         public const string ROOT_PATH = "Root";
+        public const int ROOT_ID = 0;
 
         #endregion
 
         #region Fields
 
-        private RedDotNode m_rootNode;
-        private readonly Dictionary<string, RedDotNode> m_nodeDict = new Dictionary<string, RedDotNode>(128);
+        private readonly Dictionary<int, RedDotNode> m_nodeDict = new Dictionary<int, RedDotNode>(128);
+        private readonly Dictionary<string, int> m_pathToIdMap = new Dictionary<string, int>(128);
         private readonly List<string> m_pathCache = new List<string>(8);
         private readonly StringBuilder m_stringBuilder = new StringBuilder(128);
-        private bool m_isInitialized;
-        private bool m_batchMode;
+        private int m_nextAutoId = 10000; // 自动分配 ID 的起始值（用于兼容模式）
 
         #endregion
 
         #region Properties
 
-        public RedDotNode Root => m_rootNode;
-        public bool IsInitialized => m_isInitialized;
+        public RedDotNode Root { get; private set; }
+
+        public bool IsInitialized { get; private set; }
+
         public int NodeCount => m_nodeDict.Count;
 
         #endregion
@@ -53,12 +55,13 @@ namespace RedDotSystem
 
         private void Initialize()
         {
-            if (m_isInitialized)
+            if (IsInitialized)
                 return;
 
-            m_rootNode = new RedDotNode(ROOT_PATH);
-            m_nodeDict.Add(ROOT_PATH, m_rootNode);
-            m_isInitialized = true;
+            Root = new RedDotNode(ROOT_ID, ROOT_PATH, ROOT_PATH);
+            m_nodeDict.Add(ROOT_ID, Root);
+            m_pathToIdMap.Add(ROOT_PATH, ROOT_ID);
+            IsInitialized = true;
 
             Debug.Log("[RedDotManager] Initialized");
         }
@@ -66,8 +69,11 @@ namespace RedDotSystem
         public void Reset()
         {
             m_nodeDict.Clear();
-            m_rootNode = new RedDotNode(ROOT_PATH);
-            m_nodeDict.Add(ROOT_PATH, m_rootNode);
+            m_pathToIdMap.Clear();
+            m_nextAutoId = 10000;
+            Root = new RedDotNode(ROOT_ID, ROOT_PATH, ROOT_PATH);
+            m_nodeDict.Add(ROOT_ID, Root);
+            m_pathToIdMap.Add(ROOT_PATH, ROOT_ID);
 
             Debug.Log("[RedDotManager] Reset");
         }
@@ -75,7 +81,7 @@ namespace RedDotSystem
         public void Dispose()
         {
             Reset();
-            m_isInitialized = false;
+            IsInitialized = false;
             s_instance = null;
         }
 
@@ -84,7 +90,27 @@ namespace RedDotSystem
         #region Node Operations
 
         /// <summary>
-        /// 注册红点节点（自动创建路径上的所有节点）
+        /// 注册红点节点（使用预分配的 ID，推荐）
+        /// </summary>
+        public RedDotNode Register(int id, string path, string[] segments,
+            RedDotType type = RedDotType.Dot, RedDotAggregateStrategy strategy = RedDotAggregateStrategy.Or)
+        {
+            if (string.IsNullOrEmpty(path) || segments == null || segments.Length == 0)
+            {
+                Debug.LogError("[RedDotManager] Path and segments cannot be empty");
+                return null;
+            }
+
+            if (m_nodeDict.TryGetValue(id, out var existingNode))
+            {
+                return existingNode;
+            }
+
+            return InternalRegister(id, path, segments, type, strategy);
+        }
+
+        /// <summary>
+        /// 注册红点节点（兼容模式，自动分配 ID）
         /// </summary>
         public RedDotNode Register(string path, RedDotType type = RedDotType.Dot,
             RedDotAggregateStrategy strategy = RedDotAggregateStrategy.Or)
@@ -95,18 +121,19 @@ namespace RedDotSystem
                 return null;
             }
 
-            if (m_nodeDict.TryGetValue(path, out RedDotNode existingNode))
+            // 如果路径已注册，直接返回
+            if (m_pathToIdMap.TryGetValue(path, out int existingId))
             {
-                return existingNode;
+                return m_nodeDict[existingId];
             }
 
             SplitPath(path, m_pathCache);
 
-            return RegisterInternal(path, m_pathCache, type, strategy);
+            return InternalRegisterCompat(path, m_pathCache, type, strategy);
         }
 
         /// <summary>
-        /// 注册红点节点（使用预计算的路径分段，零 GC）
+        /// 注册红点节点（使用预计算的路径分段，兼容模式）
         /// </summary>
         public RedDotNode Register(string path, string[] segments, RedDotType type = RedDotType.Dot,
             RedDotAggregateStrategy strategy = RedDotAggregateStrategy.Or)
@@ -117,17 +144,18 @@ namespace RedDotSystem
                 return null;
             }
 
-            if (m_nodeDict.TryGetValue(path, out RedDotNode existingNode))
+            if (m_pathToIdMap.TryGetValue(path, out int existingId))
             {
-                return existingNode;
+                return m_nodeDict[existingId];
             }
 
-            return RegisterInternal(path, segments, type, strategy);
+            return InternalRegisterCompat(path, segments, type, strategy);
         }
 
-        private RedDotNode RegisterInternal(string fullPath, IList<string> segments, RedDotType type, RedDotAggregateStrategy strategy)
+        private RedDotNode InternalRegister(int id, string fullPath, IList<string> segments,
+            RedDotType type, RedDotAggregateStrategy strategy)
         {
-            RedDotNode parent = m_rootNode;
+            RedDotNode parent = Root;
             m_stringBuilder.Clear();
 
             for (int i = 0; i < segments.Count; i++)
@@ -135,61 +163,145 @@ namespace RedDotSystem
                 string segment = segments[i];
 
                 if (m_stringBuilder.Length > 0)
+                {
                     m_stringBuilder.Append(PATH_SEPARATOR);
+                }
                 m_stringBuilder.Append(segment);
 
                 string currentPath = m_stringBuilder.ToString();
+                bool isLast = i == segments.Count - 1;
+                int currentId = isLast ? id : m_nextAutoId++;
 
-                if (!m_nodeDict.TryGetValue(currentPath, out RedDotNode node))
+                if (!m_pathToIdMap.TryGetValue(currentPath, out int nodeId))
                 {
-                    node = new RedDotNode(currentPath);
-                    m_nodeDict.Add(currentPath, node);
+                    var node = new RedDotNode(currentId, currentPath, segment);
+                    m_nodeDict.Add(currentId, node);
+                    m_pathToIdMap.Add(currentPath, currentId);
                     parent.AddChild(node);
-                }
 
-                if (i == segments.Count - 1)
+                    if (isLast)
+                    {
+                        node.Type = type;
+                        node.AggregateStrategy = strategy;
+                    }
+
+                    parent = node;
+                }
+                else
                 {
-                    node.Type = type;
-                    node.AggregateStrategy = strategy;
+                    parent = m_nodeDict[nodeId];
+                    if (isLast)
+                    {
+                        parent.Type = type;
+                        parent.AggregateStrategy = strategy;
+                    }
+                }
+            }
+
+            return parent;
+        }
+
+        private RedDotNode InternalRegisterCompat(string fullPath, IList<string> segments,
+            RedDotType type, RedDotAggregateStrategy strategy)
+        {
+            RedDotNode parent = Root;
+            m_stringBuilder.Clear();
+
+            for (int i = 0; i < segments.Count; i++)
+            {
+                string segment = segments[i];
+
+                if (m_stringBuilder.Length > 0)
+                {
+                    m_stringBuilder.Append(PATH_SEPARATOR);
+                }
+                m_stringBuilder.Append(segment);
+                bool isLast = i == segments.Count - 1;
+
+                string currentPath = m_stringBuilder.ToString();
+
+                if (!m_pathToIdMap.TryGetValue(currentPath, out int nodeId))
+                {
+                    int newId = m_nextAutoId++;
+                    var node = new RedDotNode(newId, currentPath, segment);
+                    m_nodeDict.Add(newId, node);
+                    m_pathToIdMap.Add(currentPath, newId);
+                    parent.AddChild(node);
+                    parent = node;
+                }
+                else
+                {
+                    parent = m_nodeDict[nodeId];
                 }
 
-                parent = node;
+                if (isLast)
+                {
+                    parent.Type = type;
+                    parent.AggregateStrategy = strategy;
+                }
             }
 
             return parent;
         }
 
         /// <summary>
-        /// 获取节点
+        /// 获取节点（通过 ID）
+        /// </summary>
+        public RedDotNode GetNode(int id) => m_nodeDict.GetValueOrDefault(id);
+
+        /// <summary>
+        /// 获取节点（通过路径，兼容模式）
         /// </summary>
         public RedDotNode GetNode(string path)
         {
             if (string.IsNullOrEmpty(path))
+            {
                 return null;
+            }
 
-            m_nodeDict.TryGetValue(path, out RedDotNode node);
-            return node;
+            if (m_pathToIdMap.TryGetValue(path, out int id))
+            {
+                return GetNode(id);
+            }
+            return null;
         }
 
         /// <summary>
-        /// 检查节点是否存在
+        /// 检查节点是否存在（通过 ID）
+        /// </summary>
+        public bool HasNode(int id) => m_nodeDict.ContainsKey(id);
+
+        /// <summary>
+        /// 检查节点是否存在（通过路径，兼容模式）
         /// </summary>
         public bool HasNode(string path)
-        {
-            return !string.IsNullOrEmpty(path) && m_nodeDict.ContainsKey(path);
-        }
+            => !string.IsNullOrEmpty(path) && m_pathToIdMap.ContainsKey(path);
 
         /// <summary>
-        /// 注销节点
+        /// 注销节点（通过 ID）
         /// </summary>
-        public void Unregister(string path)
+        public void Unregister(int id)
         {
-            if (!m_nodeDict.TryGetValue(path, out RedDotNode node))
+            if (!m_nodeDict.TryGetValue(id, out var node))
+            {
                 return;
+            }
 
             node.RemoveAllListeners();
             node.Parent?.RemoveChild(node);
-            m_nodeDict.Remove(path);
+            m_pathToIdMap.Remove(node.Path);
+            m_nodeDict.Remove(id);
+        }
+
+        /// <summary>
+        /// 注销节点（通过路径，兼容模式）
+        /// </summary>
+        public void Unregister(string path)
+        {
+            if (m_pathToIdMap.TryGetValue(path, out int id))
+            {
+                Unregister(id);
+            }
         }
 
         #endregion
@@ -197,7 +309,21 @@ namespace RedDotSystem
         #region Value Operations
 
         /// <summary>
-        /// 设置红点数值
+        /// 设置红点数值（通过 ID）
+        /// </summary>
+        public void SetValue(int id, int value)
+        {
+            RedDotNode node = GetNode(id);
+            if (node == null)
+            {
+                Debug.LogWarning($"[RedDotManager] Node not found: {id}");
+                return;
+            }
+            node.SetValue(value);
+        }
+
+        /// <summary>
+        /// 设置红点数值（通过路径，兼容模式）
         /// </summary>
         public void SetValue(string path, int value)
         {
@@ -211,7 +337,21 @@ namespace RedDotSystem
         }
 
         /// <summary>
-        /// 增加红点数值
+        /// 增加红点数值（通过 ID）
+        /// </summary>
+        public void AddValue(int id, int delta)
+        {
+            RedDotNode node = GetNode(id);
+            if (node == null)
+            {
+                Debug.LogWarning($"[RedDotManager] Node not found: {id}");
+                return;
+            }
+            node.AddValue(delta);
+        }
+
+        /// <summary>
+        /// 增加红点数值（通过路径，兼容模式）
         /// </summary>
         public void AddValue(string path, int delta)
         {
@@ -225,29 +365,42 @@ namespace RedDotSystem
         }
 
         /// <summary>
-        /// 获取红点数值
+        /// 获取红点数值（通过 ID）
+        /// </summary>
+        public int GetValue(int id)
+        {
+            RedDotNode node = GetNode(id);
+            return node != null ? node.Value : 0;
+        }
+
+        /// <summary>
+        /// 获取红点数值（通过路径，兼容模式）
         /// </summary>
         public int GetValue(string path)
         {
             RedDotNode node = GetNode(path);
-            return node?.Value ?? 0;
+            return node != null ? node.Value : 0;
         }
 
         /// <summary>
-        /// 检查是否显示红点
+        /// 检查是否显示红点（通过 ID）
         /// </summary>
-        public bool IsShow(string path)
-        {
-            return GetValue(path) > 0;
-        }
+        public bool IsShow(int id) => GetValue(id) > 0;
 
         /// <summary>
-        /// 清除红点
+        /// 检查是否显示红点（通过路径，兼容模式）
         /// </summary>
-        public void Clear(string path)
-        {
-            SetValue(path, 0);
-        }
+        public bool IsShow(string path) => GetValue(path) > 0;
+
+        /// <summary>
+        /// 清除红点（通过 ID）
+        /// </summary>
+        public void ClearNodeValue(int id) => SetValue(id, 0);
+
+        /// <summary>
+        /// 清除红点（通过路径，兼容模式）
+        /// </summary>
+        public void ClearNodeValue(string path) => SetValue(path, 0);
 
         /// <summary>
         /// 清除所有红点
@@ -268,7 +421,16 @@ namespace RedDotSystem
         #region Listener Operations
 
         /// <summary>
-        /// 添加监听
+        /// 添加监听（通过 ID）
+        /// </summary>
+        public void AddListener(int id, Action<RedDotNode> callback)
+        {
+            RedDotNode node = GetNode(id);
+            node?.AddListener(callback);
+        }
+
+        /// <summary>
+        /// 添加监听（通过路径，兼容模式）
         /// </summary>
         public void AddListener(string path, Action<RedDotNode> callback)
         {
@@ -277,49 +439,21 @@ namespace RedDotSystem
         }
 
         /// <summary>
-        /// 移除监听
+        /// 移除监听（通过 ID）
+        /// </summary>
+        public void RemoveListener(int id, Action<RedDotNode> callback)
+        {
+            RedDotNode node = GetNode(id);
+            node?.RemoveListener(callback);
+        }
+
+        /// <summary>
+        /// 移除监听（通过路径，兼容模式）
         /// </summary>
         public void RemoveListener(string path, Action<RedDotNode> callback)
         {
             RedDotNode node = GetNode(path);
             node?.RemoveListener(callback);
-        }
-
-        #endregion
-
-        #region Batch Update
-
-        /// <summary>
-        /// 开始批量更新模式
-        /// </summary>
-        public void BeginBatch()
-        {
-            m_batchMode = true;
-        }
-
-        /// <summary>
-        /// 结束批量更新模式
-        /// </summary>
-        public void EndBatch()
-        {
-            m_batchMode = false;
-            FlushDirtyNodes();
-        }
-
-        private void FlushDirtyNodes()
-        {
-            if (m_rootNode.IsDirty)
-            {
-                m_rootNode.Recalculate();
-            }
-        }
-
-        public void Update()
-        {
-            if (!m_batchMode)
-            {
-                FlushDirtyNodes();
-            }
         }
 
         #endregion
@@ -368,10 +502,9 @@ namespace RedDotSystem
         /// <summary>
         /// 获取所有节点
         /// </summary>
-        public IEnumerable<RedDotNode> GetAllNodes()
-        {
-            return m_nodeDict.Values;
-        }
+        public IEnumerable<RedDotNode> GetAllNodes() => m_nodeDict.Values;
+
+#if UNITY_EDITOR
 
         /// <summary>
         /// 打印树形结构（调试用）
@@ -379,7 +512,7 @@ namespace RedDotSystem
         public void PrintTree()
         {
             Debug.Log("[RedDotManager] RedDot Tree Structure:");
-            PrintNode(m_rootNode, 0);
+            PrintNode(Root, 0);
         }
 
         private void PrintNode(RedDotNode node, int depth)
@@ -393,6 +526,7 @@ namespace RedDotSystem
             }
         }
 
+#endif
         #endregion
     }
 }

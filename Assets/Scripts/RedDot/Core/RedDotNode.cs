@@ -10,17 +10,7 @@ namespace RedDotSystem
     {
         #region Fields
 
-        private readonly string m_path;
-        private readonly string m_name;
-        private RedDotType m_type;
-        private RedDotAggregateStrategy m_aggregateStrategy;
-
-        private RedDotNode m_parent;
         private readonly List<RedDotNode> m_children;
-
-        private int m_value;
-        private bool m_isDirty;
-        private bool m_isLeaf;
 
         private Action<RedDotNode> m_onValueChanged;
 
@@ -29,52 +19,49 @@ namespace RedDotSystem
         #region Properties
 
         /// <summary>
+        /// 节点唯一标识
+        /// </summary>
+        public int Id { get; private set; }
+
+        /// <summary>
         /// 节点完整路径（如 "Main/Mail/System"）
         /// </summary>
-        public string Path => m_path;
+        public string Path { get; private set; }
 
         /// <summary>
         /// 节点名称（路径最后一段）
         /// </summary>
-        public string Name => m_name;
+        public string Name { get; private set; }
 
         /// <summary>
         /// 红点类型
         /// </summary>
-        public RedDotType Type
-        {
-            get => m_type;
-            set => m_type = value;
-        }
+        public RedDotType Type { get; set; }
 
         /// <summary>
         /// 聚合策略
         /// </summary>
-        public RedDotAggregateStrategy AggregateStrategy
-        {
-            get => m_aggregateStrategy;
-            set => m_aggregateStrategy = value;
-        }
+        public RedDotAggregateStrategy AggregateStrategy { get; set; }
 
         /// <summary>
         /// 红点数值（0表示无红点）
         /// </summary>
-        public int Value => m_value;
+        public int Value { get; private set; }
 
         /// <summary>
         /// 是否显示红点
         /// </summary>
-        public bool IsShow => m_value > 0;
+        public bool IsShow => Value > 0;
 
         /// <summary>
         /// 是否为叶子节点
         /// </summary>
-        public bool IsLeaf => m_isLeaf;
+        public bool IsLeaf { get; private set; }
 
         /// <summary>
         /// 父节点
         /// </summary>
-        public RedDotNode Parent => m_parent;
+        public RedDotNode Parent { get; private set; }
 
         /// <summary>
         /// 子节点数量
@@ -84,22 +71,23 @@ namespace RedDotSystem
         /// <summary>
         /// 是否需要更新
         /// </summary>
-        public bool IsDirty => m_isDirty;
+        public bool IsDirty { get; private set; }
 
         #endregion
 
         #region Constructor
 
-        public RedDotNode(string path)
+        public RedDotNode(int id, string path, string name)
         {
-            m_path = path;
-            m_name = ExtractName(path);
-            m_type = RedDotType.Dot;
-            m_aggregateStrategy = RedDotAggregateStrategy.Or;
+            Id = id;
+            Path = path;
+            Name = name;
+            Type = RedDotType.Dot;
+            AggregateStrategy = RedDotAggregateStrategy.Or;
             m_children = new List<RedDotNode>(4);
-            m_value = 0;
-            m_isDirty = false;
-            m_isLeaf = true;
+            Value = 0;
+            IsDirty = false;
+            IsLeaf = true;
         }
 
         #endregion
@@ -112,11 +100,13 @@ namespace RedDotSystem
         public void AddChild(RedDotNode child)
         {
             if (child == null || m_children.Contains(child))
+            {
                 return;
+            }
 
             m_children.Add(child);
-            child.m_parent = this;
-            m_isLeaf = false;
+            child.Parent = this;
+            IsLeaf = false;
 
             MarkDirty();
         }
@@ -127,12 +117,14 @@ namespace RedDotSystem
         public void RemoveChild(RedDotNode child)
         {
             if (child == null)
+            {
                 return;
+            }
 
             if (m_children.Remove(child))
             {
-                child.m_parent = null;
-                m_isLeaf = m_children.Count == 0;
+                child.Parent = null;
+                IsLeaf = m_children.Count == 0;
                 MarkDirty();
             }
         }
@@ -143,7 +135,9 @@ namespace RedDotSystem
         public RedDotNode GetChild(int index)
         {
             if (index < 0 || index >= m_children.Count)
+            {
                 return null;
+            }
             return m_children[index];
         }
 
@@ -154,8 +148,10 @@ namespace RedDotSystem
         {
             for (int i = 0; i < m_children.Count; i++)
             {
-                if (m_children[i].m_name == name)
+                if (m_children[i].Name == name)
+                {
                     return m_children[i];
+                }
             }
             return null;
         }
@@ -169,16 +165,16 @@ namespace RedDotSystem
         /// </summary>
         public void SetValue(int value)
         {
-            if (!m_isLeaf)
+            if (!IsLeaf)
             {
-                UnityEngine.Debug.LogWarning($"[RedDot] 只有叶子节点可以直接设置数值: {m_path}");
+                UnityEngine.Debug.LogWarning($"[RedDot] 只有叶子节点可以直接设置数值: {Path}");
                 return;
             }
 
             value = Math.Max(0, value);
-            if (m_value != value)
+            if (Value != value)
             {
-                m_value = value;
+                Value = value;
                 NotifyValueChanged();
                 PropagateToParent();
             }
@@ -189,7 +185,7 @@ namespace RedDotSystem
         /// </summary>
         public void AddValue(int delta)
         {
-            SetValue(m_value + delta);
+            SetValue(Value + delta);
         }
 
         /// <summary>
@@ -207,13 +203,15 @@ namespace RedDotSystem
         /// <summary>
         /// 标记为脏
         /// </summary>
-        public void MarkDirty()
+        private void MarkDirty()
         {
-            if (m_isDirty)
+            if (IsDirty)
+            {
                 return;
+            }
 
-            m_isDirty = true;
-            m_parent?.MarkDirty();
+            IsDirty = true;
+            Parent?.MarkDirty();
         }
 
         /// <summary>
@@ -221,12 +219,14 @@ namespace RedDotSystem
         /// </summary>
         public void Recalculate()
         {
-            if (!m_isDirty)
-                return;
-
-            if (m_isLeaf)
+            if (!IsDirty)
             {
-                m_isDirty = false;
+                return;
+            }
+
+            if (IsLeaf)
+            {
+                IsDirty = false;
                 return;
             }
 
@@ -237,13 +237,13 @@ namespace RedDotSystem
 
             int newValue = CalculateAggregatedValue();
 
-            if (m_value != newValue)
+            if (Value != newValue)
             {
-                m_value = newValue;
+                Value = newValue;
                 NotifyValueChanged();
             }
 
-            m_isDirty = false;
+            IsDirty = false;
         }
 
         /// <summary>
@@ -251,26 +251,33 @@ namespace RedDotSystem
         /// </summary>
         private int CalculateAggregatedValue()
         {
-            switch (m_aggregateStrategy)
+            switch (AggregateStrategy)
             {
                 case RedDotAggregateStrategy.Sum:
                     int sum = 0;
                     for (int i = 0; i < m_children.Count; i++)
-                        sum += m_children[i].m_value;
+                    {
+                        sum += m_children[i].Value;
+                    }
                     return sum;
 
                 case RedDotAggregateStrategy.Or:
                     for (int i = 0; i < m_children.Count; i++)
                     {
-                        if (m_children[i].m_value > 0)
+                        if (m_children[i].Value > 0)
+                        {
                             return 1;
+                        }
                     }
                     return 0;
 
                 case RedDotAggregateStrategy.Max:
                     int max = 0;
+
                     for (int i = 0; i < m_children.Count; i++)
-                        max = Math.Max(max, m_children[i].m_value);
+                    {
+                        max = Math.Max(max, m_children[i].Value);
+                    }
                     return max;
 
                 default:
@@ -283,15 +290,17 @@ namespace RedDotSystem
         /// </summary>
         private void PropagateToParent()
         {
-            if (m_parent == null)
-                return;
-
-            int newParentValue = m_parent.CalculateAggregatedValue();
-            if (m_parent.m_value != newParentValue)
+            if (Parent == null)
             {
-                m_parent.m_value = newParentValue;
-                m_parent.NotifyValueChanged();
-                m_parent.PropagateToParent();
+                return;
+            }
+
+            int newParentValue = Parent.CalculateAggregatedValue();
+            if (Parent.Value != newParentValue)
+            {
+                Parent.Value = newParentValue;
+                Parent.NotifyValueChanged();
+                Parent.PropagateToParent();
             }
         }
 
@@ -335,18 +344,9 @@ namespace RedDotSystem
 
         #region Utility
 
-        private static string ExtractName(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                return string.Empty;
-
-            int lastSeparator = path.LastIndexOf('/');
-            return lastSeparator >= 0 ? path.Substring(lastSeparator + 1) : path;
-        }
-
         public override string ToString()
         {
-            return $"[RedDotNode] Path={m_path}, Value={m_value}, Type={m_type}, IsLeaf={m_isLeaf}, ChildCount={m_children.Count}";
+            return $"[RedDotNode] Path={Path}, Value={Value}, Type={Type}, IsLeaf={IsLeaf}, ChildCount={m_children.Count}";
         }
 
         #endregion
