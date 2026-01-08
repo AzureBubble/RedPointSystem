@@ -1,9 +1,9 @@
-namespace RedDotSystem
+namespace RedPointSystem
 {
     /// <summary>
     /// 红点显示类型
     /// </summary>
-    public enum RedDotType
+    public enum RedPointType
     {
         /// <summary>
         /// 普通红点（小圆点）
@@ -29,7 +29,7 @@ namespace RedDotSystem
     /// <summary>
     /// 红点聚合策略
     /// </summary>
-    public enum RedDotAggregateStrategy
+    public enum RedPointAggregateStrategy
     {
         /// <summary>
         /// 求和（用于数字红点）

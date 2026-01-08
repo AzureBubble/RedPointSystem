@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace RedDotSystem
+namespace RedPointSystem
 {
     /// <summary>
     /// 红点节点 - 核心数据结构
     /// </summary>
-    public sealed class RedDotNode
+    public sealed class RedPointNode
     {
         #region Fields
 
-        private readonly List<RedDotNode> m_children;
+        private readonly List<RedPointNode> m_children;
 
-        private Action<RedDotNode> m_onValueChanged;
+        private Action<RedPointNode> m_onValueChanged;
 
         #endregion
 
@@ -36,12 +36,12 @@ namespace RedDotSystem
         /// <summary>
         /// 红点类型
         /// </summary>
-        public RedDotType Type { get; set; }
+        public RedPointType Type { get; set; }
 
         /// <summary>
         /// 聚合策略
         /// </summary>
-        public RedDotAggregateStrategy AggregateStrategy { get; set; }
+        public RedPointAggregateStrategy AggregateStrategy { get; set; }
 
         /// <summary>
         /// 红点数值（0表示无红点）
@@ -61,7 +61,7 @@ namespace RedDotSystem
         /// <summary>
         /// 父节点
         /// </summary>
-        public RedDotNode Parent { get; private set; }
+        public RedPointNode Parent { get; private set; }
 
         /// <summary>
         /// 子节点数量
@@ -77,14 +77,14 @@ namespace RedDotSystem
 
         #region Constructor
 
-        public RedDotNode(int id, string path, string name)
+        public RedPointNode(int id, string path, string name)
         {
             Id = id;
             Path = path;
             Name = name;
-            Type = RedDotType.Dot;
-            AggregateStrategy = RedDotAggregateStrategy.Or;
-            m_children = new List<RedDotNode>(4);
+            Type = RedPointType.Dot;
+            AggregateStrategy = RedPointAggregateStrategy.Or;
+            m_children = new List<RedPointNode>(4);
             Value = 0;
             IsDirty = false;
             IsLeaf = true;
@@ -97,7 +97,7 @@ namespace RedDotSystem
         /// <summary>
         /// 添加子节点
         /// </summary>
-        public void AddChild(RedDotNode child)
+        public void AddChild(RedPointNode child)
         {
             if (child == null || m_children.Contains(child))
             {
@@ -114,7 +114,7 @@ namespace RedDotSystem
         /// <summary>
         /// 移除子节点
         /// </summary>
-        public void RemoveChild(RedDotNode child)
+        public void RemoveChild(RedPointNode child)
         {
             if (child == null)
             {
@@ -132,7 +132,7 @@ namespace RedDotSystem
         /// <summary>
         /// 获取子节点
         /// </summary>
-        public RedDotNode GetChild(int index)
+        public RedPointNode GetChild(int index)
         {
             if (index < 0 || index >= m_children.Count)
             {
@@ -144,7 +144,7 @@ namespace RedDotSystem
         /// <summary>
         /// 根据名称获取子节点
         /// </summary>
-        public RedDotNode GetChildByName(string name)
+        public RedPointNode GetChildByName(string name)
         {
             for (int i = 0; i < m_children.Count; i++)
             {
@@ -167,7 +167,7 @@ namespace RedDotSystem
         {
             if (!IsLeaf)
             {
-                UnityEngine.Debug.LogWarning($"[RedDot] 只有叶子节点可以直接设置数值: {Path}");
+                UnityEngine.Debug.LogWarning($"[RedPoint] 只有叶子节点可以直接设置数值: {Path}");
                 return;
             }
 
@@ -253,7 +253,7 @@ namespace RedDotSystem
         {
             switch (AggregateStrategy)
             {
-                case RedDotAggregateStrategy.Sum:
+                case RedPointAggregateStrategy.Sum:
                     int sum = 0;
                     for (int i = 0; i < m_children.Count; i++)
                     {
@@ -261,7 +261,7 @@ namespace RedDotSystem
                     }
                     return sum;
 
-                case RedDotAggregateStrategy.Or:
+                case RedPointAggregateStrategy.Or:
                     for (int i = 0; i < m_children.Count; i++)
                     {
                         if (m_children[i].Value > 0)
@@ -271,7 +271,7 @@ namespace RedDotSystem
                     }
                     return 0;
 
-                case RedDotAggregateStrategy.Max:
+                case RedPointAggregateStrategy.Max:
                     int max = 0;
 
                     for (int i = 0; i < m_children.Count; i++)
@@ -311,7 +311,7 @@ namespace RedDotSystem
         /// <summary>
         /// 添加值变化监听
         /// </summary>
-        public void AddListener(Action<RedDotNode> callback)
+        public void AddListener(Action<RedPointNode> callback)
         {
             m_onValueChanged += callback;
         }
@@ -319,7 +319,7 @@ namespace RedDotSystem
         /// <summary>
         /// 移除值变化监听
         /// </summary>
-        public void RemoveListener(Action<RedDotNode> callback)
+        public void RemoveListener(Action<RedPointNode> callback)
         {
             m_onValueChanged -= callback;
         }
@@ -346,7 +346,7 @@ namespace RedDotSystem
 
         public override string ToString()
         {
-            return $"[RedDotNode] Path={Path}, Value={Value}, Type={Type}, IsLeaf={IsLeaf}, ChildCount={m_children.Count}";
+            return $"[RedPointNode] Path={Path}, Value={Value}, Type={Type}, IsLeaf={IsLeaf}, ChildCount={m_children.Count}";
         }
 
         #endregion

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 364d2dc642a2d9947abbb3b8fe58cc0d, type: 3}
-  m_Name: RedDotTreeConfig
+  m_Name: RedPointTreeConfig
   m_EditorClassIdentifier: 
   m_rootNodes:
   - name: Main
@@ -18,125 +18,124 @@ MonoBehaviour:
     type: 0
     strategy: 1
     children:
-    - rid: 7239240800362561581
-    - rid: 7239240800362561582
-    - rid: 7239240800362561583
-    - rid: 7239240800362561584
+    - rid: 7239240816820748292
+    - rid: 7239240816820748293
+    - rid: 7239240816820748294
+    - rid: 7239240816820748295
     foldout: 1
     generatedPath: Main
-    generatedId: 1
+    generatedId: 0
   - name: Social
     description: "\u793E\u4EA4\u7CFB\u7EDF"
     type: 0
     strategy: 1
     children:
-    - rid: 7239240800362561585
-    - rid: 7239240800362561586
+    - rid: 7239240816820748296
+    - rid: 7239240816820748297
     foldout: 1
     generatedPath: Social
-    generatedId: 21
-  m_outputPath: Scripts/RedDot/Config/RedDotPathDefine.g.cs
-  m_namespace: RedDotSystem
-  m_className: RedDotPaths
+    generatedId: 0
+  m_outputPath: Scripts/RedPoint/Config/RedPointPathDefine.g.cs
+  m_namespace: RedPointSystem
+  m_className: RedPointPaths
   references:
     version: 2
     RefIds:
-    - rid: 7239240800362561581
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+    - rid: 7239240816820748292
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Mail
         description: "\u90AE\u4EF6\u7CFB\u7EDF"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561587
-        - rid: 7239240800362561588
-        - rid: 7239240800362561589
+        - rid: 7239240816820748298
+        - rid: 7239240816820748299
+        - rid: 7239240816820748300
         foldout: 1
         generatedPath: Main/Mail
-        generatedId: 2
-    - rid: 7239240800362561582
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748293
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Bag
         description: "\u80CC\u5305\u7CFB\u7EDF"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561590
-        - rid: 7239240800362561591
-        - rid: 7239240800362561592
+        - rid: 7239240816820748301
+        - rid: 7239240816820748302
+        - rid: 7239240816820748303
         foldout: 1
         generatedPath: Main/Bag
-        generatedId: 6
-    - rid: 7239240800362561583
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748294
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Quest
         description: "\u4EFB\u52A1\u7CFB\u7EDF"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561593
-        - rid: 7239240800362561594
-        - rid: 7239240800362561595
+        - rid: 7239240816820748304
+        - rid: 7239240816820748305
+        - rid: 7239240816820748306
         foldout: 1
         generatedPath: Main/Quest
-        generatedId: 10
-    - rid: 7239240800362561584
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748295
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Activity
         description: "\u6D3B\u52A8\u7CFB\u7EDF"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561596
-        - rid: 7239240800362561597
+        - rid: 7239240816820748307
+        - rid: 7239240816820748308
         foldout: 1
         generatedPath: Main/Activity
-        generatedId: 14
-    - rid: 7239240800362561585
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748296
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Friends
         description: "\u597D\u53CB"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561598
-        - rid: 7239240800362561599
+        - rid: 7239240816820748309
+        - rid: 7239240816820748310
         foldout: 1
         generatedPath: Social/Friends
-        generatedId: 22
-    - rid: 7239240800362561586
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748297
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Chat
         description: "\u804A\u5929"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561600
-        - rid: 7239240800362561601
-        - rid: 7239240800362561602
+        - rid: 7239240816820748311
+        - rid: 7239240816820748312
+        - rid: 7239240816820748313
         foldout: 1
         generatedPath: Social/Chat
-        generatedId: 25
-    - rid: 7239240800362561587
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748298
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: System
         description: "\u7CFB\u7EDF\u90AE\u4EF6"
-        type: 1
+        type: 0
         strategy: 1
-        children:
-        - rid: 7239240800362561607
+        children: []
         foldout: 1
         generatedPath: Main/Mail/System
-        generatedId: 3
-    - rid: 7239240800362561588
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748299
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Player
         description: "\u73A9\u5BB6\u90AE\u4EF6"
@@ -145,9 +144,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Mail/Player
-        generatedId: 4
-    - rid: 7239240800362561589
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748300
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Guild
         description: "\u516C\u4F1A\u90AE\u4EF6"
@@ -156,9 +155,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Mail/Guild
-        generatedId: 5
-    - rid: 7239240800362561590
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748301
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Equipment
         description: "\u88C5\u5907"
@@ -167,9 +166,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Bag/Equipment
-        generatedId: 7
-    - rid: 7239240800362561591
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748302
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Item
         description: "\u9053\u5177"
@@ -178,9 +177,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Bag/Item
-        generatedId: 8
-    - rid: 7239240800362561592
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748303
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Material
         description: "\u6750\u6599"
@@ -189,9 +188,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Bag/Material
-        generatedId: 9
-    - rid: 7239240800362561593
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748304
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Main
         description: "\u4E3B\u7EBF\u4EFB\u52A1"
@@ -200,9 +199,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Quest/Main
-        generatedId: 11
-    - rid: 7239240800362561594
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748305
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Daily
         description: "\u65E5\u5E38\u4EFB\u52A1"
@@ -211,9 +210,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Quest/Daily
-        generatedId: 12
-    - rid: 7239240800362561595
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748306
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Weekly
         description: "\u5468\u5E38\u4EFB\u52A1"
@@ -222,35 +221,35 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Quest/Weekly
-        generatedId: 13
-    - rid: 7239240800362561596
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748307
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: SevenDay
         description: "\u4E03\u65E5\u6D3B\u52A8"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561603
-        - rid: 7239240800362561604
+        - rid: 7239240816820748314
+        - rid: 7239240816820748315
         foldout: 1
         generatedPath: Main/Activity/SevenDay
-        generatedId: 15
-    - rid: 7239240800362561597
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748308
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: SignIn
         description: "\u7B7E\u5230\u6D3B\u52A8"
         type: 0
         strategy: 1
         children:
-        - rid: 7239240800362561605
-        - rid: 7239240800362561606
+        - rid: 7239240816820748316
+        - rid: 7239240816820748317
         foldout: 1
         generatedPath: Main/Activity/SignIn
-        generatedId: 18
-    - rid: 7239240800362561598
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748309
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Request
         description: "\u597D\u53CB\u7533\u8BF7"
@@ -259,9 +258,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Social/Friends/Request
-        generatedId: 23
-    - rid: 7239240800362561599
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748310
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Recommend
         description: "\u63A8\u8350\u597D\u53CB"
@@ -270,9 +269,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Social/Friends/Recommend
-        generatedId: 24
-    - rid: 7239240800362561600
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748311
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: World
         description: "\u4E16\u754C\u9891\u9053"
@@ -281,9 +280,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Social/Chat/World
-        generatedId: 26
-    - rid: 7239240800362561601
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748312
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Guild
         description: "\u516C\u4F1A\u9891\u9053"
@@ -292,9 +291,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Social/Chat/Guild
-        generatedId: 27
-    - rid: 7239240800362561602
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748313
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Private
         description: "\u79C1\u804A"
@@ -303,9 +302,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Social/Chat/Private
-        generatedId: 28
-    - rid: 7239240800362561603
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748314
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Task
         description: "\u4E03\u65E5\u6D3B\u52A8\u4EFB\u52A1"
@@ -314,9 +313,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Activity/SevenDay/Task
-        generatedId: 16
-    - rid: 7239240800362561604
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748315
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Reward
         description: "\u4E03\u65E5\u6D3B\u52A8\u5956\u52B1"
@@ -325,9 +324,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Activity/SevenDay/Reward
-        generatedId: 17
-    - rid: 7239240800362561605
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748316
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Daily
         description: "\u6BCF\u65E5\u7B7E\u5230"
@@ -336,9 +335,9 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Activity/SignIn/Daily
-        generatedId: 19
-    - rid: 7239240800362561606
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
+        generatedId: 0
+    - rid: 7239240816820748317
+      type: {class: RedPointNodeConfig, ns: RedPointSystem, asm: Assembly-CSharp}
       data:
         name: Cumulative
         description: "\u7D2F\u8BA1\u7B7E\u5230"
@@ -347,15 +346,4 @@ MonoBehaviour:
         children: []
         foldout: 1
         generatedPath: Main/Activity/SignIn/Cumulative
-        generatedId: 20
-    - rid: 7239240800362561607
-      type: {class: RedDotNodeConfig, ns: RedDotSystem, asm: Assembly-CSharp}
-      data:
-        name: SmallMail
-        description: "\u5C0F\u90AE\u4EF6"
-        type: 0
-        strategy: 1
-        children: []
-        foldout: 1
-        generatedPath: Main/Mail/System/SmallMail
         generatedId: 0

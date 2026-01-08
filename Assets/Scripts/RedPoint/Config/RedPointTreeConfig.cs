@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RedDotSystem
+namespace RedPointSystem
 {
     /// <summary>
     /// 红点树节点配置
     /// </summary>
     [Serializable]
-    public class RedDotNodeConfig
+    public class RedPointNodeConfig
     {
         [Tooltip("节点名称（用于生成路径）")]
         public string name;
@@ -17,14 +17,14 @@ namespace RedDotSystem
         public string description;
 
         [Tooltip("红点类型")]
-        public RedDotType type = RedDotType.Dot;
+        public RedPointType type = RedPointType.Dot;
 
         [Tooltip("聚合策略")]
-        public RedDotAggregateStrategy strategy = RedDotAggregateStrategy.Or;
+        public RedPointAggregateStrategy strategy = RedPointAggregateStrategy.Or;
 
         [Tooltip("子节点")]
         [SerializeReference]
-        public List<RedDotNodeConfig> children = new List<RedDotNodeConfig>();
+        public List<RedPointNodeConfig> children = new List<RedPointNodeConfig>();
 
         [HideInInspector]
         public bool foldout = true;
@@ -35,12 +35,12 @@ namespace RedDotSystem
         [HideInInspector]
         public int generatedId;
 
-        public RedDotNodeConfig()
+        public RedPointNodeConfig()
         {
             name = "NewNode";
         }
 
-        public RedDotNodeConfig(string nodeName)
+        public RedPointNodeConfig(string nodeName)
         {
             name = nodeName;
         }
@@ -61,7 +61,7 @@ namespace RedDotSystem
         /// <summary>
         /// 获取所有节点（扁平化）
         /// </summary>
-        public void GetAllNodes(List<RedDotNodeConfig> result)
+        public void GetAllNodes(List<RedPointNodeConfig> result)
         {
             result.Add(this);
             foreach (var child in children)
@@ -74,30 +74,30 @@ namespace RedDotSystem
     /// <summary>
     /// 红点树配置 - ScriptableObject
     /// </summary>
-    [CreateAssetMenu(menuName = "RedDotSystem/TreeConfig", fileName = "RedDotTreeConfig")]
-    public class RedDotTreeConfig : ScriptableObject
+    [CreateAssetMenu(menuName = "RedPointSystem/TreeConfig", fileName = "RedPointTreeConfig")]
+    public class RedPointTreeConfig : ScriptableObject
     {
         [Header("红点树根节点")]
         [SerializeField]
-        private List<RedDotNodeConfig> m_rootNodes = new List<RedDotNodeConfig>();
+        private List<RedPointNodeConfig> m_rootNodes = new List<RedPointNodeConfig>();
 
         [Header("代码生成设置")]
         [Tooltip("生成的脚本路径（相对于Assets）")]
         [SerializeField]
-        private string m_outputPath = "Scripts/RedDot/Config/RedDotPathDefine.g.cs";
+        private string m_outputPath = "Scripts/RedPoint/Config/RedPointPathDefine.g.cs";
 
         [Tooltip("生成的命名空间")]
         [SerializeField]
-        private string m_namespace = "RedDotSystem";
+        private string m_namespace = "RedPointSystem";
 
         [Tooltip("生成的类名")]
         [SerializeField]
-        private string m_className = "RedDotPaths";
+        private string m_className = "RedPointPaths";
 
         /// <summary>
         /// 根节点列表
         /// </summary>
-        public List<RedDotNodeConfig> RootNodes => m_rootNodes;
+        public List<RedPointNodeConfig> RootNodes => m_rootNodes;
 
         /// <summary>
         /// 输出路径
@@ -128,9 +128,9 @@ namespace RedDotSystem
         /// <summary>
         /// 获取所有节点
         /// </summary>
-        public List<RedDotNodeConfig> GetAllNodes()
+        public List<RedPointNodeConfig> GetAllNodes()
         {
-            var result = new List<RedDotNodeConfig>();
+            var result = new List<RedPointNodeConfig>();
             foreach (var root in m_rootNodes)
             {
                 root.GetAllNodes(result);
@@ -144,7 +144,7 @@ namespace RedDotSystem
         public void RegisterAll()
         {
             RefreshPaths();
-            var manager = RedDotManager.Instance;
+            var manager = RedPointMgr.Instance;
             var allNodes = GetAllNodes();
 
             foreach (var node in allNodes)

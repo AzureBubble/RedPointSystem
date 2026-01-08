@@ -4,20 +4,20 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace RedDotSystem.Editor
+namespace RedPointSystem.Editor
 {
     /// <summary>
     /// 红点树可视化编辑器窗口
     /// </summary>
-    public class RedDotTreeEditorWindow : EditorWindow
+    public class RedPointTreeEditorWindow : EditorWindow
     {
-        private RedDotTreeConfig m_config;
+        private RedPointTreeConfig m_config;
         private Vector2 m_scrollPosition;
-        private RedDotNodeConfig m_selectedNode;
-        private RedDotNodeConfig m_draggedNode;
-        private List<RedDotNodeConfig> m_draggedNodeList;
+        private RedPointNodeConfig m_selectedNode;
+        private RedPointNodeConfig m_draggedNode;
+        private List<RedPointNodeConfig> m_draggedNodeList;
         private bool m_isDragging;
-        private RedDotNodeConfig m_dropTargetNode;
+        private RedPointNodeConfig m_dropTargetNode;
         private DropPosition m_dropPosition;
 
         private enum DropPosition
@@ -42,25 +42,25 @@ namespace RedDotSystem.Editor
         // 重复路径检测
         private HashSet<string> m_duplicatePaths = new HashSet<string>();
 
-        [MenuItem("Tools/RedDot/Tree Editor")]
+        [MenuItem("Tools/RedPoint/Tree Editor")]
         public static void ShowWindow()
         {
-            var window = GetWindow<RedDotTreeEditorWindow>("RedDot Tree Editor");
+            var window = GetWindow<RedPointTreeEditorWindow>("RedPoint Tree Editor");
             window.minSize = new Vector2(400, 300);
             window.Show();
         }
 
         /// <summary>
-        /// 双击 RedDotTreeConfig 资源时打开编辑器窗口
+        /// 双击 RedPointTreeConfig 资源时打开编辑器窗口
         /// </summary>
         [UnityEditor.Callbacks.OnOpenAsset(1)]
         public static bool OnOpenAsset(int instanceID, int line)
         {
-            var asset = EditorUtility.InstanceIDToObject(instanceID) as RedDotTreeConfig;
+            var asset = EditorUtility.InstanceIDToObject(instanceID) as RedPointTreeConfig;
             if (asset == null)
                 return false;
 
-            var window = GetWindow<RedDotTreeEditorWindow>("RedDot Tree Editor");
+            var window = GetWindow<RedPointTreeEditorWindow>("RedPoint Tree Editor");
             window.minSize = new Vector2(400, 300);
             window.SetConfig(asset);
             window.Show();
@@ -70,7 +70,7 @@ namespace RedDotSystem.Editor
         /// <summary>
         /// 设置要编辑的配置
         /// </summary>
-        public void SetConfig(RedDotTreeConfig config)
+        public void SetConfig(RedPointTreeConfig config)
         {
             m_config = config;
             if (m_config != null)
@@ -88,11 +88,11 @@ namespace RedDotSystem.Editor
         private void LoadConfig()
         {
             // 尝试加载现有配置
-            string[] guids = AssetDatabase.FindAssets("t:RedDotTreeConfig");
+            string[] guids = AssetDatabase.FindAssets("t:RedPointTreeConfig");
             if (guids.Length > 0)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guids[0]);
-                m_config = AssetDatabase.LoadAssetAtPath<RedDotTreeConfig>(path);
+                m_config = AssetDatabase.LoadAssetAtPath<RedPointTreeConfig>(path);
             }
         }
 
@@ -173,7 +173,7 @@ namespace RedDotSystem.Editor
 
             // 配置选择
             EditorGUI.BeginChangeCheck();
-            m_config = (RedDotTreeConfig)EditorGUILayout.ObjectField(m_config, typeof(RedDotTreeConfig), false, GUILayout.Width(200));
+            m_config = (RedPointTreeConfig)EditorGUILayout.ObjectField(m_config, typeof(RedPointTreeConfig), false, GUILayout.Width(200));
             if (EditorGUI.EndChangeCheck() && m_config != null)
             {
                 m_config.RefreshPaths();
@@ -216,7 +216,7 @@ namespace RedDotSystem.Editor
         private void DrawNoConfigMessage()
         {
             EditorGUILayout.Space(20);
-            EditorGUILayout.HelpBox("Please select or create a RedDotTreeConfig asset.", MessageType.Info);
+            EditorGUILayout.HelpBox("Please select or create a RedPointTreeConfig asset.", MessageType.Info);
 
             EditorGUILayout.Space(10);
             if (GUILayout.Button("Create New Config", GUILayout.Height(30)))
@@ -228,14 +228,14 @@ namespace RedDotSystem.Editor
         private void CreateNewConfig()
         {
             string path = EditorUtility.SaveFilePanelInProject(
-                "Create RedDot Tree Config",
-                "RedDotTreeConfig",
+                "Create RedPoint Tree Config",
+                "RedPointTreeConfig",
                 "asset",
                 "Choose a location to save the config");
 
             if (!string.IsNullOrEmpty(path))
             {
-                m_config = ScriptableObject.CreateInstance<RedDotTreeConfig>();
+                m_config = ScriptableObject.CreateInstance<RedPointTreeConfig>();
                 AssetDatabase.CreateAsset(m_config, path);
                 AssetDatabase.SaveAssets();
                 Selection.activeObject = m_config;
@@ -297,7 +297,7 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private void CollectNodePaths(RedDotNodeConfig node, Dictionary<string, int> pathCount)
+        private void CollectNodePaths(RedPointNodeConfig node, Dictionary<string, int> pathCount)
         {
             if (node == null) return;
 
@@ -316,7 +316,7 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private void DrawNode(RedDotNodeConfig node, int depth, List<RedDotNodeConfig> parentList, int index)
+        private void DrawNode(RedPointNodeConfig node, int depth, List<RedPointNodeConfig> parentList, int index)
         {
             if (node == null) return;
 
@@ -430,7 +430,7 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private void HandleNodeDrag(RedDotNodeConfig node, List<RedDotNodeConfig> parentList, int index, Rect dragRect, Rect rowRect)
+        private void HandleNodeDrag(RedPointNodeConfig node, List<RedPointNodeConfig> parentList, int index, Rect dragRect, Rect rowRect)
         {
             Event e = Event.current;
 
@@ -482,7 +482,7 @@ namespace RedDotSystem.Editor
         /// <summary>
         /// 检查 node 是否是 potentialAncestor 的后代
         /// </summary>
-        private bool IsDescendantOf(RedDotNodeConfig node, RedDotNodeConfig potentialAncestor)
+        private bool IsDescendantOf(RedPointNodeConfig node, RedPointNodeConfig potentialAncestor)
         {
             foreach (var child in potentialAncestor.children)
             {
@@ -544,7 +544,7 @@ namespace RedDotSystem.Editor
             m_draggedNodeList.Remove(m_draggedNode);
 
             // 找到目标节点所在的列表
-            List<RedDotNodeConfig> targetList = FindParentList(m_dropTargetNode);
+            List<RedPointNodeConfig> targetList = FindParentList(m_dropTargetNode);
             if (targetList == null)
                 return;
 
@@ -570,7 +570,7 @@ namespace RedDotSystem.Editor
             MarkDirty();
         }
 
-        private List<RedDotNodeConfig> FindParentList(RedDotNodeConfig node)
+        private List<RedPointNodeConfig> FindParentList(RedPointNodeConfig node)
         {
             // 检查是否在根节点列表中
             if (m_config.RootNodes.Contains(node))
@@ -587,7 +587,7 @@ namespace RedDotSystem.Editor
             return null;
         }
 
-        private List<RedDotNodeConfig> FindParentListRecursive(RedDotNodeConfig parent, RedDotNodeConfig target)
+        private List<RedPointNodeConfig> FindParentListRecursive(RedPointNodeConfig parent, RedPointNodeConfig target)
         {
             if (parent.children.Contains(target))
                 return parent.children;
@@ -637,13 +637,13 @@ namespace RedDotSystem.Editor
 
             // 类型
             EditorGUILayout.LabelField("Type", EditorStyles.boldLabel);
-            m_selectedNode.type = (RedDotType)EditorGUILayout.EnumPopup(m_selectedNode.type);
+            m_selectedNode.type = (RedPointType)EditorGUILayout.EnumPopup(m_selectedNode.type);
 
             EditorGUILayout.Space(5);
 
             // 聚合策略
             EditorGUILayout.LabelField("Aggregate Strategy", EditorStyles.boldLabel);
-            m_selectedNode.strategy = (RedDotAggregateStrategy)EditorGUILayout.EnumPopup(m_selectedNode.strategy);
+            m_selectedNode.strategy = (RedPointAggregateStrategy)EditorGUILayout.EnumPopup(m_selectedNode.strategy);
 
             EditorGUILayout.Space(10);
 
@@ -683,16 +683,16 @@ namespace RedDotSystem.Editor
 
         private void AddRootNode()
         {
-            var newNode = new RedDotNodeConfig("NewRoot");
+            var newNode = new RedPointNodeConfig("NewRoot");
             m_config.RootNodes.Add(newNode);
             m_config.RefreshPaths();
             m_selectedNode = newNode;
             MarkDirty();
         }
 
-        private void AddChildNode(RedDotNodeConfig parent)
+        private void AddChildNode(RedPointNodeConfig parent)
         {
-            var newNode = new RedDotNodeConfig("NewNode");
+            var newNode = new RedPointNodeConfig("NewNode");
             parent.children.Add(newNode);
             parent.foldout = true;
             m_config.RefreshPaths();
@@ -700,9 +700,9 @@ namespace RedDotSystem.Editor
             MarkDirty();
         }
 
-        private void DuplicateNode(RedDotNodeConfig node)
+        private void DuplicateNode(RedPointNodeConfig node)
         {
-            var copy = new RedDotNodeConfig(node.name + "_Copy")
+            var copy = new RedPointNodeConfig(node.name + "_Copy")
             {
                 description = node.description,
                 type = node.type,
@@ -732,7 +732,7 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private bool TryAddAfterNode(RedDotNodeConfig current, RedDotNodeConfig target, RedDotNodeConfig newNode, List<RedDotNodeConfig> parentList)
+        private bool TryAddAfterNode(RedPointNodeConfig current, RedPointNodeConfig target, RedPointNodeConfig newNode, List<RedPointNodeConfig> parentList)
         {
             int index = current.children.IndexOf(target);
             if (index >= 0)
@@ -759,7 +759,7 @@ namespace RedDotSystem.Editor
             Repaint();
         }
 
-        private void SetNodeFoldout(RedDotNodeConfig node, bool foldout)
+        private void SetNodeFoldout(RedPointNodeConfig node, bool foldout)
         {
             node.foldout = foldout;
             foreach (var child in node.children)
@@ -799,8 +799,8 @@ namespace RedDotSystem.Editor
 
             sb.AppendLine($"namespace {m_config.Namespace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    public static class {m_config.ClassName}");
-            sb.AppendLine("    {");
+            sb.AppendLine($"\tpublic static class {m_config.ClassName}");
+            sb.AppendLine("\t{");
 
             // 生成嵌套类结构
             foreach (var root in m_config.RootNodes)
@@ -812,7 +812,7 @@ namespace RedDotSystem.Editor
             sb.AppendLine();
             GenerateRegisterAllMethod(sb);
 
-            sb.AppendLine("    }");
+            sb.AppendLine("\t}");
             sb.AppendLine("}");
 
             // 写入文件
@@ -841,7 +841,7 @@ namespace RedDotSystem.Editor
 
             AssetDatabase.Refresh();
 
-            Debug.Log($"[RedDot] Code generated successfully: Assets/{m_config.OutputPath}");
+            Debug.Log($"[RedPoint] Code generated successfully: Assets/{m_config.OutputPath}");
             EditorUtility.DisplayDialog("Success", $"Code generated successfully!\n\nPath: Assets/{m_config.OutputPath}", "OK");
         }
 
@@ -854,7 +854,7 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private void AssignNodeId(RedDotNodeConfig node)
+        private void AssignNodeId(RedPointNodeConfig node)
         {
             node.generatedId = m_nextId++;
             foreach (var child in node.children)
@@ -868,11 +868,11 @@ namespace RedDotSystem.Editor
             string indent = "        ";
 
             sb.AppendLine($"{indent}/// <summary>");
-            sb.AppendLine($"{indent}/// 注册所有红点节点到 RedDotManager（零 GC）");
+            sb.AppendLine($"{indent}/// 注册所有红点节点到 RedPointMgr（零 GC）");
             sb.AppendLine($"{indent}/// </summary>");
             sb.AppendLine($"{indent}public static void RegisterAll()");
             sb.AppendLine($"{indent}{{");
-            sb.AppendLine($"{indent}    var mgr = RedDotManager.Instance;");
+            sb.AppendLine($"{indent}\tvar mgr = RedPointMgr.Instance;");
             sb.AppendLine();
 
             // 收集所有节点并生成注册代码
@@ -884,7 +884,7 @@ namespace RedDotSystem.Editor
             sb.AppendLine($"{indent}}}");
         }
 
-        private void GenerateRegisterCode(StringBuilder sb, RedDotNodeConfig node, string indent, string parentAccessPath)
+        private void GenerateRegisterCode(StringBuilder sb, RedPointNodeConfig node, string indent, string parentAccessPath)
         {
             string nodeName = SanitizeName(node.name);
             string accessPath;
@@ -911,7 +911,7 @@ namespace RedDotSystem.Editor
                 sb.AppendLine($"{indent}// {node.description}");
             }
 
-            sb.AppendLine($"{indent}mgr.Register({idExpr}, {pathExpr}, {segmentsExpr}, RedDotType.{node.type}, RedDotAggregateStrategy.{node.strategy});");
+            sb.AppendLine($"{indent}mgr.Register({idExpr}, {pathExpr}, {segmentsExpr}, RedPointType.{node.type}, RedPointAggregateStrategy.{node.strategy});");
 
             // 递归处理子节点
             if (hasChildren)
@@ -924,9 +924,9 @@ namespace RedDotSystem.Editor
             }
         }
 
-        private void GenerateNodeCode(StringBuilder sb, RedDotNodeConfig node, int indentLevel)
+        private void GenerateNodeCode(StringBuilder sb, RedPointNodeConfig node, int indentLevel)
         {
-            string indent = new string(' ', indentLevel * 4);
+            string indent = new string('\t', indentLevel);
             string nodeName = SanitizeName(node.name);
             string segmentsArray = GenerateSegmentsArray(node.generatedPath);
 
@@ -946,11 +946,11 @@ namespace RedDotSystem.Editor
                 sb.AppendLine($"{indent}{{");
 
                 // Id 常量
-                sb.AppendLine($"{indent}    public const int Id = {node.generatedId};");
+                sb.AppendLine($"{indent}\tpublic const int Id = {node.generatedId};");
                 // Path 常量
-                sb.AppendLine($"{indent}    public const string Path = \"{node.generatedPath}\";");
+                sb.AppendLine($"{indent}\tpublic const string Path = \"{node.generatedPath}\";");
                 // Segments 数组（预计算，零 GC）
-                sb.AppendLine($"{indent}    public static readonly string[] Segments = {segmentsArray};");
+                sb.AppendLine($"{indent}\tpublic static readonly string[] Segments = {segmentsArray};");
 
                 // 子节点
                 foreach (var child in node.children)
