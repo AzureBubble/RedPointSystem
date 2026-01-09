@@ -24,20 +24,11 @@ public class NodeUIItem : MonoBehaviour
         ValueText = transform.Find("Value")?.GetComponent<Text>();
         RedDotIcon = transform.Find("Icon")?.GetComponent<Image>();
         AddButton = transform.Find("Add")?.GetComponent<Button>();
-        AddButton?.onClick.AddListener(() =>
-        {
-            RedPointMgr.Instance.AddValue(m_node.Id, 1);
-        });
+        AddButton?.onClick.AddListener(() => { RedPointMgr.Instance.AddValue(m_node.Id, 1); });
         SubButton = transform.Find("Sub")?.GetComponent<Button>();
-        SubButton?.onClick.AddListener(() =>
-        {
-            RedPointMgr.Instance.AddValue(m_node.Id, -1);
-        });
+        SubButton?.onClick.AddListener(() => { RedPointMgr.Instance.AddValue(m_node.Id, -1); });
         ClearButton = transform.Find("Clear")?.GetComponent<Button>();
-        ClearButton?.onClick.AddListener(() =>
-        {
-            RedPointMgr.Instance.SetValue(m_node.Id, 0);
-        });
+        ClearButton?.onClick.AddListener(() => { RedPointMgr.Instance.SetValue(m_node.Id, 0); });
         transform?.Find("Type")?.TryGetComponent<Text>(out TypeText);
 
         ValueText.text = 0.ToString();
@@ -48,6 +39,7 @@ public class NodeUIItem : MonoBehaviour
     public void Init(int id)
     {
         var node = RedPointMgr.Instance.GetNode(id);
+
         if (node == null)
         {
             return;
@@ -55,21 +47,24 @@ public class NodeUIItem : MonoBehaviour
 
         m_node = node;
 
-        NameText.text = m_node.Name;
-        if(TypeText!=null)
+        if (NameText != null)
+            NameText.text = m_node.Name;
+        if (TypeText != null)
             TypeText.text = node.AggregateStrategy.ToString();
 
         if (node.Type == RedPointType.Number)
         {
-            ValueText.text = node.Value.ToString();
+            if (ValueText != null)
+                ValueText.text = node.Value.ToString();
         }
         else
         {
-            ValueText.text = 1.ToString();
+            if (ValueText != null)
+                ValueText.text = 1.ToString();
         }
 
-        ValueText.gameObject.SetActive(node.IsShow);
-        RedDotIcon.gameObject.SetActive(node.IsShow);
+        ValueText?.gameObject?.SetActive(node.IsShow);
+        RedDotIcon?.gameObject?.SetActive(node.IsShow);
         node.AddListener(Refresh);
     }
 
@@ -79,8 +74,9 @@ public class NodeUIItem : MonoBehaviour
         if (node != null)
         {
             NameText.text = node.Name;
-            if(TypeText!=null)
+            if (TypeText != null)
                 TypeText.text = node.AggregateStrategy.ToString();
+
             if (node.Type == RedPointType.Number)
             {
                 ValueText.text = node.Value.ToString();
@@ -89,6 +85,7 @@ public class NodeUIItem : MonoBehaviour
             {
                 ValueText.text = 1.ToString();
             }
+
             ValueText.gameObject.SetActive(node.IsShow);
             RedDotIcon.gameObject.SetActive(node.IsShow);
         }
