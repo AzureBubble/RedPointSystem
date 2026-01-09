@@ -11,3 +11,4 @@
 简单易用好上手。
 
 示例场景：SampleScene
+<img width="944" height="1227" alt="image" src="https://github.com/user-attachments/assets/f99e7654-d403-4ceb-8cbc-e32f43b33b8f" />
